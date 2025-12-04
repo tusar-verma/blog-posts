@@ -4,7 +4,7 @@ interface BlogArticleProps {
     post: BlogPost;
 }
 
-export default function BlogArticle({ post }: BlogArticleProps) {
+const BlogArticle = ({ post }: BlogArticleProps) => {
     return (
         <article className="space-y-8">
             <header className="text-center space-y-4">
@@ -30,3 +30,5 @@ export default function BlogArticle({ post }: BlogArticleProps) {
         </article>
     );
 }
+
+export default BlogArticle;

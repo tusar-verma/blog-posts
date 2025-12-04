@@ -6,7 +6,7 @@ interface BlogListProps {
     posts: BlogPost[];
 }
 
-export default function BlogList({ posts }: BlogListProps) {
+const BlogList = ({ posts }: BlogListProps) => {
     return (
         <section>
             <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -19,3 +19,5 @@ export default function BlogList({ posts }: BlogListProps) {
         </section>
     );
 }
+
+export default BlogList;

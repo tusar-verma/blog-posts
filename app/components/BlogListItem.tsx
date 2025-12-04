@@ -5,7 +5,7 @@ interface BlogListItemProps {
     post: BlogPost;
 }
 
-export default function BlogListItem({ post }: BlogListItemProps) {
+const BlogListItem = ({ post }: BlogListItemProps) => {
     return (
         <article className="h-full p-6 border rounded-lg shadow-sm hover:shadow-md transition-shadow bg-white dark:bg-gray-800 dark:border-gray-700">
             <Link
@@ -23,3 +23,5 @@ export default function BlogListItem({ post }: BlogListItemProps) {
         </article>
     );
 }
+
+export default BlogListItem;

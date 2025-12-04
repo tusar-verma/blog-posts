@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function BlogHeader() {
+const BlogHeader = () => {
     return (
         <header className="w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center">
@@ -14,3 +14,5 @@ export default function BlogHeader() {
         </header>
     );
 }
+
+export default BlogHeader;

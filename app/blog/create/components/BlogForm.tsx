@@ -1,6 +1,6 @@
 import { createBlog } from '../../../lib/actions';
 
-export default function BlogForm() {
+const BlogForm = () => {
     return (
         <form action={createBlog} className="space-y-6">
             <div>
@@ -50,3 +50,5 @@ export default function BlogForm() {
         </form>
     );
 }
+
+export default BlogForm;
