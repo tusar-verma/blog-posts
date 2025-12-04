@@ -6,12 +6,12 @@ export default async function Page() {
   const posts = await repository.getAllPosts();
 
   return (
-    <main>
-      <header>
-        <h1>My Blog Platform</h1>
+    <main className="max-w-4xl mx-auto p-4">
+      <header className="mb-8 text-center">
+        <h1 className="text-3xl font-bold">My Blog Platform</h1>
       </header>
       <BlogList posts={posts} />
-      <footer>
+      <footer className="mt-12 text-center text-gray-500 text-sm">
         Page footer
       </footer>
     </main>
