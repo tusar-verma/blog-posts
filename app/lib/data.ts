@@ -72,7 +72,7 @@ export class MockBlogRepository implements IBlogRepository {
         },
         {
             id: '10',
-            title: 'The Future of Web Development',
+            title: 'Lorem Ipsum',
             content: `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet facilisis nunc. Curabitur velit orci, faucibus non purus vitae, placerat ultrices metus. Vestibulum sed egestas dui. Sed ac gravida mi. Nullam ex quam, fringilla non vehicula eu, scelerisque cursus mauris. Integer porta egestas venenatis. Praesent auctor tristique enim, ut fringilla mauris lobortis sed. Mauris blandit elementum lectus, quis dapibus augue.
 
