@@ -1,4 +1,4 @@
-import { BlogPost } from '../lib/definitions';
+import { BlogPost } from '../../../lib/definitions';
 
 interface BlogArticleProps {
     post: BlogPost;
