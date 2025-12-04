@@ -13,9 +13,9 @@ export default function BlogArticle({ post }: BlogArticleProps) {
                 </h1>
                 <p className="text-lg text-gray-600 dark:text-gray-400">
                     By{' '}
-                    <span className="font-medium text-gray-900 dark:text-white">
+                    <cite className="font-medium text-gray-900 dark:text-white">
                         {post.author}
-                    </span>{' '}
+                    </cite>{' '}
                     on{' '}
                     <time dateTime={post.publishedAt}>
                         {new Date(post.publishedAt).toLocaleDateString()}

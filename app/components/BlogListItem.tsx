@@ -15,13 +15,10 @@ export default function BlogListItem({ post }: BlogListItemProps) {
                 {post.title}
             </Link>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                By <span className="font-medium">{post.author}</span> on{' '}
+                By <cite className="font-medium">{post.author}</cite> on{' '}
                 <time dateTime={post.publishedAt}>
                     {new Date(post.publishedAt).toLocaleDateString()}
                 </time>
-            </p>
-            <p className="text-gray-700 dark:text-gray-300 line-clamp-3">
-                {post.content}
             </p>
         </article>
     );
