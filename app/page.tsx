@@ -1,24 +1,15 @@
-import Image from "next/image";
+import { MockBlogRepository } from './lib/data';
+import BlogList from './components/BlogList';
+import HomeHeader from './components/HomeHeader';
 
-export default function Home() {
+export default async function Page() {
+  const repository = new MockBlogRepository();
+  const posts = await repository.getAllPosts();
+
   return (
-    <>
-      <header>
-        <h1>Header</h1>
-      </header>
-      <nav>
-        <ul>
-          <li>Home</li>
-          <li>About</li>
-          <li>Contact</li>
-        </ul>
-      </nav>
-      <main>
-        main content
-      </main>
-      <footer>
-        footer
-      </footer>
-    </>
+    <main className="max-w-4xl mx-auto p-4">
+      <HomeHeader />
+      <BlogList posts={posts} />
+    </main>
   );
 }
