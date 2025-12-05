@@ -1,8 +1,9 @@
+import Form from 'next/form';
 import { createBlog } from '../../../lib/actions';
 import InputForm from './InputForm';
 
 const BlogForm = () => (
-    <form action={createBlog} className="space-y-6">
+    <Form action={createBlog} className="space-y-6">
         <InputForm
             label="Title"
             type="text"
@@ -37,7 +38,7 @@ const BlogForm = () => (
                 Create Post
             </button>
         </div>
-    </form>
+    </Form>
 )
 
 export default BlogForm;
