@@ -2,10 +2,8 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import BlogForm from '../app/blog/create/components/BlogForm';
 import fs from 'fs/promises';
 
-// Mock fs/promises
 jest.mock('fs/promises');
 
-// Mock next/navigation and cache
 jest.mock('next/navigation', () => ({
     redirect: jest.fn(),
 }));
@@ -13,14 +11,13 @@ jest.mock('next/cache', () => ({
     revalidatePath: jest.fn(),
 }));
 
-// Mock next/link
 jest.mock('next/link', () => {
     return ({ children, href }: { children: React.ReactNode; href: string }) => {
         return <a href={href}>{children}</a>;
     };
 });
 
-describe('Blog Creation Flow', () => {
+describe('BlogForm component tests', () => {
     test('should write the new blog post to the JSON file', async () => {
         (fs.readFile as jest.Mock).mockResolvedValue('[]');
         (fs.writeFile as jest.Mock).mockResolvedValue(undefined);
@@ -39,7 +36,6 @@ describe('Blog Creation Flow', () => {
 
         fireEvent.click(submitButton);
 
-        // Wait for writeFile to be called
         await waitFor(() => {
             expect(fs.writeFile).toHaveBeenCalled();
         });
