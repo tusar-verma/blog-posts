@@ -2,7 +2,7 @@ import { MockBlogRepository } from './lib/data';
 import BlogList from './components/BlogList';
 import HomeHeader from './components/HomeHeader';
 
-export default async function Page() {
+const Page = async () => {
   const repository = new MockBlogRepository();
   const posts = await repository.getAllPosts();
 
@@ -13,3 +13,5 @@ export default async function Page() {
     </main>
   );
 }
+
+export default Page;

@@ -1,9 +1,13 @@
-import { MockBlogRepository } from '../../lib/data';
 import { notFound } from 'next/navigation';
+import { MockBlogRepository } from '../../lib/data';
 import BlogHeader from '../../components/BlogHeader';
 import BlogArticle from './components/BlogArticle';
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+interface PageProps {
+    params: Promise<{ id: string }>;
+}
+
+const Page = async ({ params }: PageProps) => {
     const { id } = await params;
     const repository = new MockBlogRepository();
     const post = await repository.getPostById(id);
@@ -21,3 +25,5 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         </>
     );
 }
+
+export default Page;
