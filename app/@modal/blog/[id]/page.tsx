@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
-import { MockBlogRepository } from '../../lib/data';
-import BlogHeader from '../../components/BlogHeader';
+import { MockBlogRepository } from '../../../lib/data';
 import BlogArticle from './components/BlogArticle';
+import Modal from '../../../components/Modal';
 
 interface PageProps {
     params: Promise<{ id: string }>;
@@ -17,13 +17,11 @@ const Page = async ({ params }: PageProps) => {
     }
 
     return (
-        <>
-            <BlogHeader />
-            <main className="max-w-3xl mx-auto p-4 sm:p-6 lg:p-8">
-                <BlogArticle post={post} />
-            </main>
-        </>
+        <Modal>
+            <BlogArticle post={post} />
+        </Modal>
     );
 }
 
 export default Page;
+

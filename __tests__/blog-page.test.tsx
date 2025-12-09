@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import BlogArticle from '../app/blog/[id]/components/BlogArticle';
+import BlogArticle from '../app/@modal/blog/[id]/components/BlogArticle';
 import BlogHeader from '../app/components/BlogHeader';
 import { BlogPost } from '../app/lib/definitions';
 
