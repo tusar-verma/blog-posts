@@ -2,7 +2,6 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { MockBlogRepository } from './data';
 
 export async function createBlog(formData: FormData) {
     const title = formData.get('title') as string;
@@ -13,11 +12,16 @@ export async function createBlog(formData: FormData) {
         throw new Error('Missing required fields');
     }
 
-    const repository = new MockBlogRepository();
-    await repository.createPost({
-        title,
-        author,
-        content,
+    await fetch('http://localhost:3000/api/blogs', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            title,
+            author,
+            content,
+        }),
     });
 
     revalidatePath('/');

@@ -1,10 +1,9 @@
-import { MockBlogRepository } from './lib/data';
 import BlogList from './components/BlogList';
 import HomeHeader from './components/HomeHeader';
 
 const Page = async () => {
-  const repository = new MockBlogRepository();
-  const posts = await repository.getAllPosts();
+  const res = await fetch('http://localhost:3000/api/blogs', { cache: 'no-store' });
+  const posts = await res.json();
 
   return (
     <main className="max-w-4xl mx-auto p-4">
