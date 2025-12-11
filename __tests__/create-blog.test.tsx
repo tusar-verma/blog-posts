@@ -24,10 +24,10 @@ describe('BlogForm component tests', () => {
 
         render(<BlogForm />);
 
-        const titleInput = screen.getByLabelText(/Title/i);
-        const authorInput = screen.getByLabelText(/Author/i);
-        const contentInput = screen.getByLabelText(/Content/i);
-        const submitButton = screen.getByRole('button', { name: /Create Post/i });
+        const titleInput = screen.getByLabelText(/title/i);
+        const authorInput = screen.getByLabelText(/author/i);
+        const contentInput = screen.getByLabelText(/content/i);
+        const submitButton = screen.getByRole('button', { name: /create post/i });
 
         fireEvent.change(titleInput, { target: { value: 'Integration Test Title' } });
         fireEvent.change(authorInput, { target: { value: 'Integration Author' } });
@@ -52,9 +52,9 @@ describe('BlogForm component tests', () => {
     test('should require title, author, and content fields', () => {
         render(<BlogForm />);
 
-        const titleInput = screen.getByLabelText(/Title/i);
-        const authorInput = screen.getByLabelText(/Author/i);
-        const contentInput = screen.getByLabelText(/Content/i);
+        const titleInput = screen.getByLabelText(/title/i);
+        const authorInput = screen.getByLabelText(/author/i);
+        const contentInput = screen.getByLabelText(/content/i);
 
         expect(titleInput).toBeRequired();
         expect(authorInput).toBeRequired();

@@ -13,7 +13,7 @@ export async function createBlog(prevState: any, formData: FormData) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/aasdasdpi/blogs', {
+        const response = await fetch('http://localhost:3000/api/blogs', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
