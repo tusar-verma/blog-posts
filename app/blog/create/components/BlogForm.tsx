@@ -1,36 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { usePost } from '../../../hooks/usePost';
+import { createBlog } from '../../../lib/actions';
 import InputForm from './InputForm';
-import { FormEvent, useActionState, useEffect } from 'react';
+import { useActionState } from 'react';
 
 const BlogForm = () => {
-    const { statusCode, message, data, loading, postData } = usePost('/api/blogs');
-    console.log(statusCode, message, data, loading);
-    const router = useRouter();
-
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        const payload = {
-            title: formData.get('title'),
-            author: formData.get('author'),
-            content: formData.get('content'),
-        };
-        await postData(payload);
-    };
-
-    useEffect(() => {
-        if (data) {
-            router.push('/');
-            router.refresh(); // Refresh to update the list
-        }
-    }, [data, router]);
+    const [state, formAction, isPending] = useActionState(createBlog, null);
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            {message === 'error' && <div className="text-red-500">Error creating post: {message}</div>}
+        <form action={formAction} className="space-y-6">
+            {state?.message && <div className="text-red-500">Error creating post: {state.message}</div>}
             <InputForm
                 label="Title"
                 type="text"
@@ -60,14 +39,16 @@ const BlogForm = () => {
             <div>
                 <button
                     type="submit"
-                    disabled={loading}
+                    disabled={isPending}
                     className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                 >
-                    {loading ? 'Creating...' : 'Create Post'}
+                    {isPending ? 'Creating...' : 'Create Post'}
                 </button>
             </div>
         </form>
     );
+
+
 }
 
 export default BlogForm;
