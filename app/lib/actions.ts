@@ -3,7 +3,11 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function createBlog(prevState: any, formData: FormData) {
+type CreateBlogState = {
+    message: string;
+} | null;
+
+export async function createBlog(prevState: CreateBlogState, formData: FormData) {
     const title = formData.get('title') as string;
     const author = formData.get('author') as string;
     const content = formData.get('content') as string;

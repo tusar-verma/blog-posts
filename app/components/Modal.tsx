@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 
 const Modal = ({ children }: { children: React.ReactNode }) => {
-    const router = useRouter();
+    const { back } = useRouter();
     const dialogRef = useRef<HTMLDialogElement>(null);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const Modal = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     function onDismiss() {
-        router.back();
+        back();
     }
 
     return (

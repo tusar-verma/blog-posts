@@ -19,7 +19,6 @@ export const useGet = <T>(url: string): UseGetResponse<T> => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setResponse(prev => ({ ...prev, loading: true }));
             try {
                 const res = await fetch(url);
                 const data = await res.json();

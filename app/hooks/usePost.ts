@@ -10,7 +10,6 @@ interface UsePostResponse<T> {
     postData: (body: unknown) => Promise<void>;
 }
 
-
 export const usePost = <T>(url: string): UsePostResponse<T> => {
     const [response, setResponse] = useState<Omit<UsePostResponse<T>, 'postData'>>({
         statusCode: 0,
@@ -20,7 +19,6 @@ export const usePost = <T>(url: string): UsePostResponse<T> => {
     });
 
     const postData = async (body: unknown) => {
-        setResponse(prev => ({ ...prev, loading: true }));
         try {
             const res = await fetch(url, {
                 method: 'POST',
