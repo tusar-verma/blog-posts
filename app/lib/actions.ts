@@ -30,7 +30,7 @@ export async function createBlog(prevState: any, formData: FormData) {
         }
 
     } catch (e) {
-        return { message: 'Failed to create blog post' };
+        return { message: 'Network error: Failed to create blog post' };
     }
 
     revalidatePath('/');

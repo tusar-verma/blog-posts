@@ -60,4 +60,30 @@ describe('BlogForm component tests', () => {
         expect(authorInput).toBeRequired();
         expect(contentInput).toBeRequired();
     });
+
+    test('should display error when API call fails', async () => {
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: false,
+                status: 500
+            })
+        ) as jest.Mock;
+
+        render(<BlogForm />);
+
+        const titleInput = screen.getByLabelText(/title/i);
+        const authorInput = screen.getByLabelText(/author/i);
+        const contentInput = screen.getByLabelText(/content/i);
+        const submitButton = screen.getByRole('button', { name: /create post/i });
+
+        fireEvent.change(titleInput, { target: { value: 'Error Test Title' } });
+        fireEvent.change(authorInput, { target: { value: 'Error Author' } });
+        fireEvent.change(contentInput, { target: { value: 'Error Content' } });
+
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            expect(screen.getByText(/Error creating post: Failed to create blog post/i)).toBeInTheDocument();
+        });
+    });
 });

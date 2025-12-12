@@ -1,5 +1,6 @@
 'use client';
 
+import Form from 'next/form';
 import { createBlog } from '../../../lib/actions';
 import InputForm from './InputForm';
 import { useActionState } from 'react';
@@ -8,7 +9,7 @@ const BlogForm = () => {
     const [state, formAction, isPending] = useActionState(createBlog, null);
 
     return (
-        <form action={formAction} className="space-y-6">
+        <Form action={formAction} className="space-y-6">
             {state?.message && <div className="text-red-500">Error creating post: {state.message}</div>}
             <InputForm
                 label="Title"
@@ -45,7 +46,7 @@ const BlogForm = () => {
                     {isPending ? 'Creating...' : 'Create Post'}
                 </button>
             </div>
-        </form>
+        </Form>
     );
 
 
