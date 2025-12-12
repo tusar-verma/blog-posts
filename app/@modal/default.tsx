@@ -1,5 +1,3 @@
-const Default = () => {
-    return <></>;
-}
+const Default = () => (<></>)
 
 export default Default;
