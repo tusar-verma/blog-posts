@@ -30,7 +30,7 @@ describe('createBlog Action', () => {
         incompleteFormData.append('title', 'Test Title');
         // Missing author and content
 
-        const result = await createBlog({}, incompleteFormData);
+        const result = await createBlog(null, incompleteFormData);
 
         expect(result).toEqual({ message: 'Missing required fields' });
         expect(revalidatePath).not.toHaveBeenCalled();
@@ -40,9 +40,9 @@ describe('createBlog Action', () => {
     test('should return error if API call fails (network error)', async () => {
         (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
 
-        const result = await createBlog({}, formData);
+        const result = await createBlog(null, formData);
 
-        expect(result).toEqual({ message: 'Network error: Failed to create blog post' });
+        expect(result).toEqual({ message: 'Failed to create blog post' });
         expect(revalidatePath).not.toHaveBeenCalled();
         expect(redirect).not.toHaveBeenCalled();
     });
@@ -52,7 +52,7 @@ describe('createBlog Action', () => {
             ok: false,
         });
 
-        const result = await createBlog({}, formData);
+        const result = await createBlog(null, formData);
 
         expect(result).toEqual({ message: 'Failed to create blog post' });
         expect(revalidatePath).not.toHaveBeenCalled();
@@ -65,7 +65,7 @@ describe('createBlog Action', () => {
             json: async () => ({}),
         });
 
-        await createBlog({}, formData);
+        await createBlog(null, formData);
 
         expect(global.fetch).toHaveBeenCalledWith('http://localhost:3000/api/blogs', expect.objectContaining({
             method: 'POST',

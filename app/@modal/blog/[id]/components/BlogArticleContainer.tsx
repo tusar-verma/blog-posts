@@ -1,6 +1,6 @@
 'use client';
 
-import { useGet } from '../../../../hooks/useGet';
+import useGet from '../../../../hooks/useGet';
 import { BlogPost } from '../../../../lib/definitions';
 import BlogArticle from './BlogArticle';
 

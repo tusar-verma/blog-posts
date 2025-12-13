@@ -10,7 +10,7 @@ interface UsePostResponse<T> {
     postData: (body: unknown) => Promise<void>;
 }
 
-export const usePost = <T>(url: string): UsePostResponse<T> => {
+const usePost = <T>(url: string): UsePostResponse<T> => {
     const [response, setResponse] = useState<Omit<UsePostResponse<T>, 'postData'>>({
         statusCode: 0,
         message: '',
@@ -48,3 +48,5 @@ export const usePost = <T>(url: string): UsePostResponse<T> => {
 
     return { ...response, postData };
 };
+
+export default usePost;

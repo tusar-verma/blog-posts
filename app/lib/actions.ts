@@ -2,10 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import postBlog from './postBlog';
+
 
 type CreateBlogState = {
     message: string;
 } | null;
+
 
 export async function createBlog(prevState: CreateBlogState, formData: FormData) {
     const title = formData.get('title') as string;
@@ -15,26 +18,17 @@ export async function createBlog(prevState: CreateBlogState, formData: FormData)
     if (!title || !author || !content) {
         return { message: 'Missing required fields' };
     }
-
     try {
-        const response = await fetch('http://localhost:3000/api/blogs', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
+        await postBlog({
+            url: 'http://localhost:3000/api/blogs',
+            content: {
                 title,
                 author,
                 content,
-            }),
+            }
         });
-
-        if (!response.ok) {
-            return { message: 'Failed to create blog post' };
-        }
-
-    } catch (e) {
-        return { message: 'Network error: Failed to create blog post' };
+    } catch {
+        return { message: 'Failed to create blog post' };
     }
 
     revalidatePath('/');

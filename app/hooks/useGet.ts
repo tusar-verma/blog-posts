@@ -9,7 +9,7 @@ interface UseGetResponse<T> {
     loading: boolean;
 }
 
-export const useGet = <T>(url: string): UseGetResponse<T> => {
+const useGet = <T>(url: string): UseGetResponse<T> => {
     const [response, setResponse] = useState<UseGetResponse<T>>({
         statusCode: 0,
         message: '',
@@ -44,3 +44,5 @@ export const useGet = <T>(url: string): UseGetResponse<T> => {
 
     return response;
 };
+
+export default useGet;
