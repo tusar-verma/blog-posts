@@ -2,23 +2,34 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { MockBlogRepository } from './data';
+import postBlog from './postBlog';
 
-export async function createBlog(formData: FormData) {
+
+type CreateBlogState = {
+    message: string;
+} | null;
+
+
+export async function createBlog(prevState: CreateBlogState, formData: FormData) {
     const title = formData.get('title') as string;
     const author = formData.get('author') as string;
     const content = formData.get('content') as string;
 
     if (!title || !author || !content) {
-        throw new Error('Missing required fields');
+        return { message: 'Missing required fields' };
     }
-
-    const repository = new MockBlogRepository();
-    await repository.createPost({
-        title,
-        author,
-        content,
-    });
+    try {
+        await postBlog({
+            url: 'http://localhost:3000/api/blogs',
+            content: {
+                title,
+                author,
+                content,
+            }
+        });
+    } catch {
+        return { message: 'Failed to create blog post' };
+    }
 
     revalidatePath('/');
     redirect('/');

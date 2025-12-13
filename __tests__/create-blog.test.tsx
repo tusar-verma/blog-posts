@@ -1,11 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import BlogForm from '../app/blog/create/components/BlogForm';
-import fs from 'fs/promises';
 
-// Mock fs/promises
-jest.mock('fs/promises');
-
-// Mock next/navigation and cache
 jest.mock('next/navigation', () => ({
     redirect: jest.fn(),
 }));
@@ -13,25 +8,26 @@ jest.mock('next/cache', () => ({
     revalidatePath: jest.fn(),
 }));
 
-// Mock next/link
 jest.mock('next/link', () => {
     return ({ children, href }: { children: React.ReactNode; href: string }) => {
         return <a href={href}>{children}</a>;
     };
 });
 
-describe('Blog Creation Flow', () => {
-    test('should write the new blog post to the JSON file', async () => {
-        (fs.readFile as jest.Mock).mockResolvedValue('[]');
-        (fs.writeFile as jest.Mock).mockResolvedValue(undefined);
-        (fs.access as jest.Mock).mockResolvedValue(undefined);
+describe('BlogForm component tests', () => {
+    test('should call API to create a new blog post', async () => {
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                json: () => Promise.resolve({ success: true }),
+            })
+        ) as jest.Mock;
 
         render(<BlogForm />);
 
-        const titleInput = screen.getByLabelText(/Title/i);
-        const authorInput = screen.getByLabelText(/Author/i);
-        const contentInput = screen.getByLabelText(/Content/i);
-        const submitButton = screen.getByRole('button', { name: /Create Post/i });
+        const titleInput = screen.getByLabelText(/title/i);
+        const authorInput = screen.getByLabelText(/author/i);
+        const contentInput = screen.getByLabelText(/content/i);
+        const submitButton = screen.getByRole('button', { name: /create post/i });
 
         fireEvent.change(titleInput, { target: { value: 'Integration Test Title' } });
         fireEvent.change(authorInput, { target: { value: 'Integration Author' } });
@@ -39,31 +35,55 @@ describe('Blog Creation Flow', () => {
 
         fireEvent.click(submitButton);
 
-        // Wait for writeFile to be called
         await waitFor(() => {
-            expect(fs.writeFile).toHaveBeenCalled();
+            expect(global.fetch).toHaveBeenCalledTimes(1);
         });
 
-        const writeCall = (fs.writeFile as jest.Mock).mock.calls[0];
-        const writtenContent = JSON.parse(writeCall[1]);
-
-        expect(writtenContent).toHaveLength(1);
-        expect(writtenContent[0]).toMatchObject({
-            title: 'Integration Test Title',
-            author: 'Integration Author',
-            content: 'Integration Content'
-        });
+        expect(global.fetch).toHaveBeenCalledWith('http://localhost:3000/api/blogs', expect.objectContaining({
+            method: 'POST',
+            body: JSON.stringify({
+                title: 'Integration Test Title',
+                author: 'Integration Author',
+                content: 'Integration Content'
+            })
+        }));
     });
 
     test('should require title, author, and content fields', () => {
         render(<BlogForm />);
 
-        const titleInput = screen.getByLabelText(/Title/i);
-        const authorInput = screen.getByLabelText(/Author/i);
-        const contentInput = screen.getByLabelText(/Content/i);
+        const titleInput = screen.getByLabelText(/title/i);
+        const authorInput = screen.getByLabelText(/author/i);
+        const contentInput = screen.getByLabelText(/content/i);
 
         expect(titleInput).toBeRequired();
         expect(authorInput).toBeRequired();
         expect(contentInput).toBeRequired();
+    });
+
+    test('should display error when API call fails', async () => {
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                ok: false,
+                status: 500
+            })
+        ) as jest.Mock;
+
+        render(<BlogForm />);
+
+        const titleInput = screen.getByLabelText(/title/i);
+        const authorInput = screen.getByLabelText(/author/i);
+        const contentInput = screen.getByLabelText(/content/i);
+        const submitButton = screen.getByRole('button', { name: /create post/i });
+
+        fireEvent.change(titleInput, { target: { value: 'Error Test Title' } });
+        fireEvent.change(authorInput, { target: { value: 'Error Author' } });
+        fireEvent.change(contentInput, { target: { value: 'Error Content' } });
+
+        fireEvent.click(submitButton);
+
+        await waitFor(() => {
+            expect(screen.getByText(/Error creating post: Failed to create blog post/i)).toBeInTheDocument();
+        });
     });
 });

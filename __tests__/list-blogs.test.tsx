@@ -1,29 +1,35 @@
 import { render, screen } from '@testing-library/react';
-import Page from '../app/page';
-import fs from 'fs/promises';
+import BlogList from '../app/components/BlogList';
+import BlogListItem from '../app/components/BlogListItem';
+import { BlogPost } from '../app/lib/definitions';
+import posts from '../app/lib/posts.json';
 
-jest.mock('fs/promises');
-jest.mock('next/link', () => {
-    return ({ children, href }: { children: React.ReactNode; href: string }) => {
-        return <a href={href}>{children}</a>;
-    };
-});
+describe('BlogList Components tests', () => {
+    const post: BlogPost = posts[0] as BlogPost;
 
-describe('Blog List Page', () => {
-    test('should render blogs from JSON', async () => {
-        const mockPosts = [
-            { id: '1', title: 'Blog 1', author: 'Author 1', content: 'Content 1', publishedAt: '2023-01-01T00:00:00Z' },
-            { id: '2', title: 'Blog 2', author: 'Author 2', content: 'Content 2', publishedAt: '2023-01-02T00:00:00Z' },
-        ];
-        (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(mockPosts));
-        (fs.access as jest.Mock).mockResolvedValue(undefined);
+    if (!post) {
+        throw new Error('No posts found in posts.json');
+    }
 
-        const jsx = await Page();
-        render(jsx);
+    test('should render a list of blogs', () => {
+        render(<BlogList posts={posts} />);
 
-        expect(screen.getByText('Blog 1')).toBeInTheDocument();
-        expect(screen.getByText('Blog 2')).toBeInTheDocument();
-        expect(screen.getByText(/Author 1/)).toBeInTheDocument();
-        expect(screen.getByText(/Author 2/)).toBeInTheDocument();
+        posts.forEach(post => {
+            expect(screen.getAllByText(post.title).length).toBeGreaterThan(0);
+            expect(screen.getAllByText(post.author).length).toBeGreaterThan(0);
+        });
+    });
+
+    test('should render blog details', () => {
+        render(<BlogListItem post={post} />);
+
+        expect(screen.getByText(post.title)).toBeInTheDocument();
+        expect(screen.getByText(post.author)).toBeInTheDocument();
+
+        const dateString = new Date(post.publishedAt).toLocaleDateString();
+        expect(screen.getByText(dateString)).toBeInTheDocument();
+
+        const link = screen.getByRole('link', { name: post.title });
+        expect(link).toHaveAttribute('href', `/blog/${post.id}`);
     });
 });
